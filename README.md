@@ -1,5 +1,5 @@
-# fiber-opentracing 
-fiber-opentraing middleware support opentracing for Fiber framework.
+# fiber-opentracing 🔍
+fiber-opentraing middleware support opentracing for Fiber⚡️ framework.
 
 ## Install 
 ```shell
