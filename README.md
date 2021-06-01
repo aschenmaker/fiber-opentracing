@@ -1,11 +1,21 @@
-# fiber-opentracing 🔍
-fiber-opentraing middleware support opentracing for Fiber⚡️ framework.
+# fiber-opentracing 🔍 Middleware
+fiber-opentraing middleware support opentracing for [Fiber](https://github.com/gofiber/fiber)⚡️ framework.
 
 ## How to use
 ```shell
 go get -u github.com/gofiber/v2
 go get -u github.com/aschenmaker/fiber-opentracing
 ```
+default use 
+```go
+import (
+	"github.com/gofiber/fiber/v2"
+	fibertracing	"github.com/gofiber/aschenmaker/fiber-opentracing"
+)
+
+app.Use(fibertracing.New())
+```
+
 ## Config
 Middleware has 4 configs.
 ```go
