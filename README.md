@@ -6,6 +6,16 @@ fiber-opentraing middleware support opentracing for Fiber⚡️ framework.
 go get -u github.com/gofiber/v2
 go get -u github.com/aschenmaker/fiber-opentracing
 ```
+## Config
+Middleware has 4 configs.
+```go
+type Config struct {
+	Tracer           opentracing.Tracer
+	TransacationName func(*fiber.Ctx) string
+	Filter           func(*fiber.Ctx) bool
+	Modify           func(*fiber.Ctx, opentracing.Span)
+}
+```
 
 ## Example
 You can run example/example.go
