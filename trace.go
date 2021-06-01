@@ -13,7 +13,7 @@ func New(config Config) fiber.Handler {
 	cfg := configDefault(config)
 
 	return func(c *fiber.Ctx) error {
-		//
+		// Filter the Request no need for tracing
 		if cfg.Filter != nil && cfg.Filter(c) {
 			return c.Next()
 		}
@@ -23,14 +23,18 @@ func New(config Config) fiber.Handler {
 		tracer := cfg.Tracer
 		header := make(http.Header)
 
+		// traverse the header from fasthttp
+		// and then set to http header for extract
+		// trace infomation
 		c.Request().Header.VisitAll(func(key, value []byte) {
 			header.Set(string(key), string(value))
 		})
 
-		sop := HeaderExtractor(header)
+		// Extract trace-id from header
+		spop := HeaderExtractor(header)
 
-		if sop != nil {
-			span = tracer.StartSpan(tracsacationName, sop)
+		if spop != nil {
+			span = tracer.StartSpan(tracsacationName, spop)
 		} else {
 			span = tracer.StartSpan(tracsacationName)
 		}
@@ -39,7 +43,6 @@ func New(config Config) fiber.Handler {
 
 		defer func() {
 			status := c.Response().StatusCode()
-
 			ext.HTTPStatusCode.Set(span, uint16(status))
 			if status >= fiber.StatusInternalServerError {
 				ext.Error.Set(span, true)

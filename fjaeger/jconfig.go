@@ -10,6 +10,7 @@ import (
 	jconfig "github.com/uber/jaeger-client-go/config"
 )
 
+// Config of jaeger
 type Config struct {
 	ServiceName      string
 	Sampler          *jconfig.SamplerConfig
@@ -17,7 +18,7 @@ type Config struct {
 	Headers          *jaeger.HeadersConfig
 	EnableRPCMetrics bool
 	tags             []opentracing.Tag
-	options          []jconfig.Option
+	options          []jconfig.Option // add other custom config here
 	PanicOnError     bool
 	closer           func() error
 }
@@ -44,6 +45,7 @@ var ConfigDefault = Config{
 	PanicOnError: true,
 }
 
+// configDefault return default config of jaeger
 func configDefault(config ...Config) Config {
 	if len(config) < 1 {
 		return ConfigDefault

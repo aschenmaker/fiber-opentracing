@@ -9,10 +9,8 @@ import (
 type Config struct {
 	Tracer           opentracing.Tracer
 	TransacationName func(*fiber.Ctx) string
-
-	Filter func(*fiber.Ctx) bool
-
-	Modify func(*fiber.Ctx, opentracing.Span)
+	Filter           func(*fiber.Ctx) bool
+	Modify           func(*fiber.Ctx, opentracing.Span)
 }
 
 // ConfigDefault is the default config
