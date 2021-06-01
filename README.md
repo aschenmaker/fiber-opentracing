@@ -10,7 +10,7 @@ default use
 ```go
 import (
 	"github.com/gofiber/fiber/v2"
-	fibertracing	"github.com/gofiber/aschenmaker/fiber-opentracing"
+	fibertracing "github.com/aschenmaker/fiber-opentracing"
 )
 
 app.Use(fibertracing.New())
