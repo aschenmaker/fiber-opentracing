@@ -7,10 +7,11 @@ import (
 
 // Config defines the config of middlewares
 type Config struct {
-	Tracer        opentracing.Tracer
-	OperationName func(*fiber.Ctx) string
-	Filter        func(*fiber.Ctx) bool
-	Modify        func(*fiber.Ctx, opentracing.Span)
+	Tracer                opentracing.Tracer
+	OperationName         func(*fiber.Ctx) string
+	Filter                func(*fiber.Ctx) bool
+	Modify                func(*fiber.Ctx, opentracing.Span)
+	SkipSpanWithoutParent bool
 }
 
 // ConfigDefault is the default config

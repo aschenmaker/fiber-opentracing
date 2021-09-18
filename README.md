@@ -17,13 +17,14 @@ app.Use(fibertracing.New())
 ```
 
 ## Config
-Middleware has 4 configs.
+Middleware has 5 configs.
 ```go
 type Config struct {
-	Tracer        opentracing.Tracer
-	OperationName func(*fiber.Ctx) string
-	Filter        func(*fiber.Ctx) bool
-	Modify        func(*fiber.Ctx, opentracing.Span)
+	Tracer                opentracing.Tracer
+	OperationName         func(*fiber.Ctx) string
+	Filter                func(*fiber.Ctx) bool
+	Modify                func(*fiber.Ctx, opentracing.Span)
+	SkipSpanWithoutParent bool
 }
 ```
 
