@@ -7,10 +7,11 @@ import (
 
 // Config defines the config of middlewares
 type Config struct {
-	Tracer           opentracing.Tracer
-	TransacationName func(*fiber.Ctx) string
-	Filter           func(*fiber.Ctx) bool
-	Modify           func(*fiber.Ctx, opentracing.Span)
+	Tracer                opentracing.Tracer
+	OperationName         func(*fiber.Ctx) string
+	Filter                func(*fiber.Ctx) bool
+	Modify                func(*fiber.Ctx, opentracing.Span)
+	SkipSpanWithoutParent bool
 }
 
 // ConfigDefault is the default config
@@ -23,7 +24,7 @@ var ConfigDefault = Config{
 		span.SetTag("http.host", ctx.Hostname())
 		span.SetTag("http.url", ctx.OriginalURL())
 	},
-	TransacationName: func(ctx *fiber.Ctx) string {
+	OperationName: func(ctx *fiber.Ctx) string {
 		return "HTTP " + ctx.Method() + " URL: " + ctx.Path()
 	},
 }
@@ -40,8 +41,8 @@ func configDefault(config ...Config) Config {
 		cfg.Tracer = ConfigDefault.Tracer
 	}
 
-	if cfg.TransacationName == nil {
-		cfg.TransacationName = ConfigDefault.TransacationName
+	if cfg.OperationName == nil {
+		cfg.OperationName = ConfigDefault.OperationName
 	}
 
 	if cfg.Modify == nil {

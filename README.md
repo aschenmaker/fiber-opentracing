@@ -6,7 +6,7 @@ fiber-opentraing middleware support opentracing for [Fiber](https://github.com/g
 go get -u github.com/gofiber/v2
 go get -u github.com/aschenmaker/fiber-opentracing
 ```
-default use 
+default use
 ```go
 import (
 	"github.com/gofiber/fiber/v2"
@@ -17,13 +17,14 @@ app.Use(fibertracing.New())
 ```
 
 ## Config
-Middleware has 4 configs.
+Middleware has 5 configs.
 ```go
 type Config struct {
-	Tracer           opentracing.Tracer
-	TransacationName func(*fiber.Ctx) string
-	Filter           func(*fiber.Ctx) bool
-	Modify           func(*fiber.Ctx, opentracing.Span)
+	Tracer                opentracing.Tracer
+	OperationName         func(*fiber.Ctx) string
+	Filter                func(*fiber.Ctx) bool
+	Modify                func(*fiber.Ctx, opentracing.Span)
+	SkipSpanWithoutParent bool
 }
 ```
 
@@ -46,13 +47,13 @@ import (
 func main() {
 	app := *fiber.New()
 	// Use jaeger default config.
-	// You can use Jaeger-all-in-one 
+	// You can use Jaeger-all-in-one
 	// and then check trace in JaegerUI
 	fjaeger.New(fjaeger.Config{})
 
 	app.Use(fibertracing.New(fibertracing.Config{
 		Tracer: opentracing.GlobalTracer(),
-		TransacationName: func(ctx *fiber.Ctx) string {
+		OperationName: func(ctx *fiber.Ctx) string {
 			return "TEST:  HTTP " + ctx.Method() + " URL: " + ctx.Path()
 		},
 	}))

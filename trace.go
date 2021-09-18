@@ -19,7 +19,7 @@ func New(config Config) fiber.Handler {
 		}
 		var span opentracing.Span
 
-		TransacationName := cfg.TransacationName(c)
+		operationName := cfg.OperationName(c)
 		tracer := cfg.Tracer
 		header := make(http.Header)
 
@@ -33,9 +33,11 @@ func New(config Config) fiber.Handler {
 		// Extract trace-id from header
 		sc, err := tracer.Extract(opentracing.HTTPHeaders, opentracing.HTTPHeadersCarrier(header))
 		if err == nil {
-			span = tracer.StartSpan(TransacationName, opentracing.ChildOf(sc))
+			span = tracer.StartSpan(operationName, opentracing.ChildOf(sc))
+		} else if !cfg.SkipSpanWithoutParent {
+			span = tracer.StartSpan(operationName)
 		} else {
-			span = tracer.StartSpan(TransacationName)
+			return c.Next()
 		}
 
 		cfg.Modify(c, span)
