@@ -17,7 +17,7 @@ func main() {
 
 	app.Use(fibertracing.New(fibertracing.Config{
 		Tracer: opentracing.GlobalTracer(),
-		TransacationName: func(ctx *fiber.Ctx) string {
+		OperationName: func(ctx *fiber.Ctx) string {
 			return "TEST:  HTTP " + ctx.Method() + " URL: " + ctx.Path()
 		},
 	}))
