@@ -34,9 +34,10 @@ func New(config Config) fiber.Handler {
 		sc, err := tracer.Extract(opentracing.HTTPHeaders, opentracing.HTTPHeadersCarrier(header))
 		if err == nil {
 			span = tracer.StartSpan(operationName, opentracing.ChildOf(sc))
-			c.Locals("spanContext", sc)
+			c.Locals("spanContext", span.Context())
 		} else if !cfg.SkipSpanWithoutParent {
 			span = tracer.StartSpan(operationName)
+			c.Locals("spanContext", span.Context())
 		} else {
 			return c.Next()
 		}
