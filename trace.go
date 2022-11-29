@@ -40,6 +40,7 @@ func New(config Config) fiber.Handler {
 			return c.Next()
 		}
 
+		c.Locals("spanContext", span.Context())
 		cfg.Modify(c, span)
 
 		defer func() {
